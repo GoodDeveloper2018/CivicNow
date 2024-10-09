@@ -1,15 +1,20 @@
-import { Text, View } from "react-native";
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import HomeScreen from './HomeScreen';
+import EventScreen from './EventScreen';
+import ReminderScreen from './ReminderScreen';
 
-export default function Index() {
+const Tab = createBottomTabNavigator();
+
+export default function App() {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
-    </View>
+    <NavigationContainer>
+      <Tab.Navigator initialRouteName="Home">
+        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Events" component={EventScreen} />
+        <Tab.Screen name="Reminders" component={ReminderScreen} />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
 }
