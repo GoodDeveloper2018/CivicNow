@@ -1,23 +1,16 @@
 import React from 'react';
-import { View, Text, StyleSheet, Button, Alert } from 'react-native';
+import { View, Text, Button, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default function HomeScreen() {
-  const handleViewEvents = () => {
-    Alert.alert('View Events', 'Displaying upcoming local events...');
-  };
-
-  const handleSetReminders = () => {
-    Alert.alert('Set Reminders', 'You can set reminders for events...');
-  };
-
+export default function HomeScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>Welcome to CivicNow!</Text>
       <Text style={styles.subtitle}>Stay informed and engaged with local events</Text>
+
       <View style={styles.buttonContainer}>
-        <Button title="View Events" onPress={handleViewEvents} color="#00796b" />
-        <Button title="Set Reminders" onPress={handleSetReminders} color="#00796b" />
+        <Button title="View Events" onPress={() => navigation.navigate('Events')} />
+        <Button title="Set Reminders" onPress={() => navigation.navigate('Reminders')} />
       </View>
     </SafeAreaView>
   );
@@ -31,19 +24,21 @@ const styles = StyleSheet.create({
     backgroundColor: '#e0f7fa',
   },
   title: {
-    fontSize: 28,
+    fontSize: 32,
     fontWeight: 'bold',
     color: '#00796b',
+    marginBottom: 10,
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: 18,
     marginTop: 10,
     color: '#004d40',
+    textAlign: 'center',
+    marginBottom: 30,
   },
   buttonContainer: {
-    marginTop: 20,
+    flexDirection: 'column',
     width: '80%',
     justifyContent: 'space-between',
-    height: 100,
   },
 });
