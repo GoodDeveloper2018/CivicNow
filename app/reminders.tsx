@@ -1,17 +1,16 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text, Button, StyleSheet, Alert } from 'react-native';
 import * as Notifications from 'expo-notifications';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import CalendarComponent from '../components/Calender';
-import DateTimePicker from 'react-native-modal-datetime-picker';
+
 
 
 export default function ReminderScreen() {
   const [reminderSet, setReminderSet] = useState(false);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [events, setEvents] = useState([]);
+
   const showDatePicker = () => {
     setDatePickerVisibility(true);
     
@@ -21,14 +20,7 @@ export default function ReminderScreen() {
     setDatePickerVisibility(false);
   };
 
-  // const onChange = ({ type }, selectedDate) =>{
-  //   if(type =="set"){
-  //     const currentDate = selectedDate;
-  //     setSelectedDate(currentDate);
-  //   }else{
-  //     hideDatePicker();
-  //   }
-  // }
+
 
   const handleConfirm = async (date: Date) => {
     hideDatePicker();

@@ -11,7 +11,7 @@ export default function HomeScreen() {
       <Text style={styles.subtitle}>Stay informed and engaged with local events</Text>
 
       <View style={styles.buttonContainer}>
-        <Button title="View Events" onPress={() => router.push('/checkAvalibility')} />
+        <Button title="View Events" onPress={() => router.push('/events')} />
         <Button title="Set Reminders" onPress={() => router.push('/reminders')} />
       </View>
     </View>
