@@ -1,21 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { View, Text, Button, StyleSheet, Alert } from 'react-native';
 import * as Notifications from 'expo-notifications';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import CalendarComponent from '../components/Calender';
+import DateTimePicker from 'react-native-modal-datetime-picker';
+
 
 export default function ReminderScreen() {
   const [reminderSet, setReminderSet] = useState(false);
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-
+  const [events, setEvents] = useState([]);
   const showDatePicker = () => {
     setDatePickerVisibility(true);
+    
   };
 
   const hideDatePicker = () => {
     setDatePickerVisibility(false);
   };
+
+  // const onChange = ({ type }, selectedDate) =>{
+  //   if(type =="set"){
+  //     const currentDate = selectedDate;
+  //     setSelectedDate(currentDate);
+  //   }else{
+  //     hideDatePicker();
+  //   }
+  // }
 
   const handleConfirm = async (date: Date) => {
     hideDatePicker();
@@ -39,13 +52,17 @@ export default function ReminderScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Reminders</Text>
-      <Button title="Select a Date for Reminder" onPress={showDatePicker} />
-      <DateTimePickerModal
-        isVisible={isDatePickerVisible}
-        mode="date"
-        onConfirm={handleConfirm}
-        onCancel={hideDatePicker}
+      <Button title="Select a Date for Reminder" onPress={showDatePicker}  />
+      <DateTimePicker
+      isVisible={isDatePickerVisible}
+      mode="date"
+      display = "spinner"
+      onConfirm={handleConfirm}
+      onCancel={hideDatePicker}
+      style = {styles.datePicker}
+      
       />
+     
 
       {selectedDate && (
         <Text style={styles.subtitle}>
@@ -79,5 +96,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
     fontSize: 16,
     color: '#004d40',
+  },
+  datePicker:{
+    marginTop:-20,
+    height: 120,
   },
 });
