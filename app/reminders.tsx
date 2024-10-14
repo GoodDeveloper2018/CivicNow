@@ -45,7 +45,7 @@ export default function ReminderScreen() {
     <View style={styles.container}>
       <Text style={styles.title}>Reminders</Text>
       <Button title="Select a Date for Reminder" onPress={showDatePicker}  />
-      <DateTimePicker
+      <DateTimePickerModal
       isVisible={isDatePickerVisible}
       mode="date"
       display = "spinner"
