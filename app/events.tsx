@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Alert, Button } from 'react-native';
 import * as Location from 'expo-location';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from 'expo-router';
 
 export default function EventScreen() {
@@ -14,17 +15,42 @@ export default function EventScreen() {
   );
 
   const checkLocationPermission = async () => {
+    const savedPermission = await AsyncStorage.getItem('locationPermission');
+    if (savedPermission === 'granted') {
+      setPermissionGranted(true);
+      getLocation();  // Fetch user's location
+    } else if (savedPermission === 'denied') {
+      // If previously denied, show a single prompt
+      Alert.alert(
+        'Permission Denied',
+        'You have previously denied location permissions. Please enable it in settings if you wish to use this feature.',
+        [{ text: 'Close' }]
+      );
+    } else {
+      askForLocationPermission();
+    }
+  };
+
+  const askForLocationPermission = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
 
     if (status === 'granted') {
+      await AsyncStorage.setItem('locationPermission', 'granted');
       setPermissionGranted(true);
-      getLocation();
+      getLocation();  // Fetch user's location
     } else {
+      await AsyncStorage.setItem('locationPermission', 'denied');
       Alert.alert(
         'Permission Denied',
-        'Location permission is required to find events near you. You can enable it in settings or retry.',
-        [{ text: 'Retry', onPress: () => checkLocationPermission() }]
+        'Location access is needed. You can enable it in the settings.',
+        [
+          {
+            text: 'Close',
+            style: 'cancel',
+          },
+        ]
       );
+      setPermissionGranted(false);
     }
   };
 
