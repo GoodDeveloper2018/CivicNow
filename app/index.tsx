@@ -1,12 +1,16 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
+import { Link } from 'expo-router';
 
 export default function HomeScreen() {
   const router = useRouter();
 
   return (
     <View style={styles.container}>
+       <Link href="/about" style={styles.button}>
+        Go to About screen
+      </Link>
       <Text style={styles.title}>Welcome to CivicNow!</Text>
       <Text style={styles.subtitle}>Stay informed and engaged with local events</Text>
 
@@ -14,6 +18,7 @@ export default function HomeScreen() {
         <Button title="View Events" onPress={() => router.push('/events')} />
         <Button title="Set Reminders" onPress={() => router.push('/reminders')} />
       </View>
+
     </View>
   );
 }
@@ -42,5 +47,10 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     width: '80%',
     justifyContent: 'space-between',
+  },
+  button: {
+    fontSize: 20,
+    textDecorationLine: 'underline',
+    color: '#fff',
   },
 });
