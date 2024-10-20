@@ -59,6 +59,15 @@ export default function RootLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="news"
+        options={{
+          tabBarLabel: 'News',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="newspaper" color={color} size={size} />
+          ),
+        }}
+      />
     </Tabs>
   );
 }
