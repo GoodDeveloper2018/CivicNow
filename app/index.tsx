@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Link } from 'expo-router';
-import Chatbot from './chatbot'; // Import your Chatbot component
+import Chatbot from './chatbox'; // Import your Chatbot component
 
 
 export default function HomeScreen() {
@@ -10,16 +10,11 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <Link href="/about" style={styles.button}>
-        Go to About screen
-      </Link>
+      
       <Text style={styles.title}>Welcome to CivicNow!</Text>
       <Text style={styles.subtitle}>Stay informed and engaged with local events</Text>
 
-      <View style={styles.buttonContainer}>
-        <Button title="View Events" onPress={() => router.push('/events')} />
-        <Button title="Set Reminders" onPress={() => router.push('/reminders')} />
-      </View>
+
 
       {/* Add your Chatbot component here */}
       <View style={styles.chatbotContainer}>
@@ -34,18 +29,18 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#e0f7fa',
+    backgroundColor: '#f8f4e3',
   },
   title: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#00796b',
+    color: '#2a2b2a',
     marginBottom: 10,
   },
   subtitle: {
     fontSize: 18,
     marginTop: 10,
-    color: '#004d40',
+    color: '#222222',
     textAlign: 'center',
     marginBottom: 30,
   },
@@ -57,7 +52,7 @@ const styles = StyleSheet.create({
   button: {
     fontSize: 20,
     textDecorationLine: 'underline',
-    color: '#fff',
+    color: '#706c61',
   },
   chatbotContainer: {
     marginTop: 20,

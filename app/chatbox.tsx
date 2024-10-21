@@ -89,7 +89,7 @@ const Chatbot = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#f8f4e3',
     padding: 10,
   },
   chatContainer: {
