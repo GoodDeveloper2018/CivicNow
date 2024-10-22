@@ -28,7 +28,7 @@ const Chatbot = () => {
         },
         {
           headers: {
-            'Authorization': ``, // Replace with a valid API key
+           
             'Content-Type': 'application/json',
           },
         }
