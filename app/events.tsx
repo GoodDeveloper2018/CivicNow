@@ -5,7 +5,7 @@ import * as Location from 'expo-location';
 import { useFocusEffect } from 'expo-router';
 import axios from 'axios'; 
 
-const API_KEY ='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';
+const API_KEY ='';
 
 const openaiApi = axios.create({
   baseURL: 'https://api.openai.com/v1',
@@ -128,7 +128,7 @@ export default function EventScreen() {
       const response = await fetch(url, {
         method: 'GET',
         headers: {
-          Authorization: 'Bearer PQdVunmIc4L7vf6Wz5K3stkpIffoKTWd7PMnjOCh', // Replace with a valid token
+          Authorization: 'Bearer ', // Replace with a valid token
           Accept: 'application/json',
         },
       });
