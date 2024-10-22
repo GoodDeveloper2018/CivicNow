@@ -28,7 +28,7 @@ const Chatbot = () => {
         },
         {
           headers: {
-            // 'Authorization': ` `, //
+            'Authorization': `Bearer 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`, // Replace with a valid API key
             'Content-Type': 'application/json',
           },
         }
@@ -89,7 +89,7 @@ const Chatbot = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#f8f4e3',
     padding: 10,
   },
   chatContainer: {
