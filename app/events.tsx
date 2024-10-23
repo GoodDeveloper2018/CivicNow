@@ -1,11 +1,11 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Alert, Button, ActivityIndicator, FlatList } from 'react-native';
 import * as Location from 'expo-location';
 import { useFocusEffect } from 'expo-router';
 import axios from 'axios'; 
+import RNPickerSelect from 'react-native-picker-select';
 
-const API_KEY ='';
+const API_KEY = '',
 
 const openaiApi = axios.create({
   baseURL: 'https://api.openai.com/v1',
@@ -77,19 +77,42 @@ type Event = {
 };
 
 export default function EventScreen() {
-  const [location, setLocation] = useState<Location.LocationObject | null>(null); // Correct
-  const [permissionGranted, setPermissionGranted] = useState<boolean>(false); // Specify type
-  const [events, setEvents] = useState<Event[]>([]); // Correct
-  const [loading, setLoading] = useState<boolean>(false); // Specify type
-  const [summary, setSummary] = useState<string>(''); // Specify type
-  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null); // Correct
-  
+  const [location, setLocation] = useState<Location.LocationObject | null>(null);
+  const [permissionGranted, setPermissionGranted] = useState<boolean>(false);
+  const [events, setEvents] = useState<Event[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [summary, setSummary] = useState<string>('');
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string>(''); // Start with an empty string
 
-  useFocusEffect(
-    React.useCallback(() => {
-      checkLocationPermission();
-    }, [])
-  );
+  // Update the placeholder to not use null
+  const categoryOptions = [
+    { label: 'All Categories', value: '' }, // Use an empty string instead of null
+    { label: 'Community', value: 'community' },
+    { label: 'Concerts', value: 'concerts' },
+    { label: 'Conferences', value: 'conferences' },
+    { label: 'Expos', value: 'expos' },
+    { label: 'Festivals', value: 'festivals' },
+    { label: 'Performing Arts', value: 'performing-arts' },
+    { label: 'Sports', value: 'sports' },
+    { label : 'Academic',value: 'academic'},
+    { label : 'School-Holidays',value: 'school-holidays'},
+    { label : 'Observances',value: 'observances'},
+    { label : 'Politics',value: 'politics'},
+    { label : 'Daylight-Savings',value: 'daylight-savings'},
+    { label : 'Airport-Delays',value: 'airport-delays'},
+    { label : 'Severe-Weather',value: 'severe-weather'},
+    { label : 'Disasters',value: 'disasters'},
+    { label : 'Terror',value: 'terror'},
+    { label : 'Health-Warnings',value: 'health-warnings'},
+  ];
+
+  // Use useEffect to fetch events when selectedCategory or location changes
+  useEffect(() => {
+    if (location) {
+      fetchEvents(location.coords.latitude, location.coords.longitude);
+    }
+  }, [selectedCategory, location]); // Add selectedCategory as a dependency
 
   const checkLocationPermission = async () => {
     const { status } = await Location.requestForegroundPermissionsAsync();
@@ -119,16 +142,15 @@ export default function EventScreen() {
   const fetchEvents = async (latitude: number, longitude: number) => {
     setLoading(true);
     try {
-      const startDate = '2024-11-01';
-      const endDate = '2024-11-30';
-      const attendedCategories = ['community', 'concerts', 'conferences', 'expos', 'festivals', 'performing-arts', 'sports'];
+      const attendedCategories = selectedCategory ? [selectedCategory] : ['community', 'concerts', 'conferences', 'expos', 'festivals', 'performing-arts', 'sports'];
       const url = `https://api.predicthq.com/v1/events?within=4.05mi@${latitude},${longitude}&limit=1000&sort=start&start.gte=2024-10-23&category=${attendedCategories.join(',')}`;
       console.log('Fetching events from:', url);
+      console.log(attendedCategories);
 
       const response = await fetch(url, {
         method: 'GET',
         headers: {
-          Authorization: 'Bearer ', // Replace with a valid token
+          Authorization: 'Bearer ',
           Accept: 'application/json',
         },
       });
@@ -160,7 +182,7 @@ export default function EventScreen() {
     const textToSummarize = `${event.title}: ${event.geo?.address?.formatted_address || 'No location specified'}`;
 
     try {
-      await delay(RATE_LIMIT_DELAY); // Wait before making the API call
+      await delay(RATE_LIMIT_DELAY);
       const result = await fetchSummary(textToSummarize);
       setSummary(result);
     } catch (error) {
@@ -210,6 +232,18 @@ export default function EventScreen() {
           Events near your location: {location.coords.latitude}, {location.coords.longitude}
         </Text>
       )}
+      <RNPickerSelect
+        onValueChange={(value) => {
+          setSelectedCategory(value);
+        }}
+        items={categoryOptions}
+        placeholder={{ label: 'Select a category...', value: '' }} // Use empty string
+        value={selectedCategory} // Set the value prop here
+        style={{
+          inputIOS: styles.picker,
+          inputAndroid: styles.picker,
+        }}
+      />
       {events.length > 0 ? (
         <FlatList
           data={events}
@@ -251,6 +285,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#f8f4e3',
+    padding: 20,
   },
   loader: {
     flex: 1,
@@ -261,17 +296,24 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 'bold',
     color: '#00796b',
+    marginBottom: 10,
   },
   subtitle: {
     fontSize: 18,
     marginTop: 10,
     color: '#004d40',
+    textAlign: 'center',
   },
   eventItem: {
     padding: 10,
     marginBottom: 10,
     backgroundColor: '#fff',
     borderRadius: 8,
+    width: '100%',
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 2,
   },
   eventTitle: {
     fontSize: 18,
@@ -297,10 +339,23 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 8,
     width: '100%',
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 2,
   },
   summaryTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     color: '#00796b',
+  },
+  picker: {
+    marginVertical: 15,
+    borderWidth: 1,
+    borderColor: '#00796b',
+    borderRadius: 8,
+    padding: 10,
+    width: '100%',
+    backgroundColor: '#fff',
   },
 });
