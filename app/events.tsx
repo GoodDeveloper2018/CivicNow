@@ -5,8 +5,7 @@ import { useFocusEffect } from 'expo-router';
 import axios from 'axios'; 
 import RNPickerSelect from 'react-native-picker-select';
 
-const API_KEY = '',
-
+const API_KEY = '';
 const openaiApi = axios.create({
   baseURL: 'https://api.openai.com/v1',
   headers: {

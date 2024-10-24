@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, ScrollView, Image } from 'react-native';
 import axios from 'axios';
 
 type Message = {
@@ -23,12 +23,12 @@ const Chatbot = () => {
       const response = await axios.post(
         'https://api.openai.com/v1/chat/completions',
         {
-          model: 'gpt-3.5-turbo', // Ensure the model is correct
+          model: 'gpt-3.5-turbo',
           messages: [{ role: 'user', content: userMessage }],
         },
         {
           headers: {
-            'Authorization': `Bearer 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`, 
+            'Authorization': 'Bearer ',
             'Content-Type': 'application/json',
           },
         }
@@ -62,6 +62,14 @@ const Chatbot = () => {
 
   return (
     <View style={styles.container}>
+      {/* Title and Image */}
+      <Text style={styles.title}>Chatbot</Text>
+      <Text style={styles.text}>Welcome to your personal guide to our app! Feel free to ask questions to learn more about your community or anything else on your mind!</Text>
+      <Image
+        source={{ uri: '../components/chatbot.png' }} // Replace with your image URL
+        style={styles.image}
+      />
+      
       <ScrollView style={styles.chatContainer} ref={scrollViewRef}>
         {messages.map((message, index) => (
           <View
@@ -75,6 +83,7 @@ const Chatbot = () => {
           </View>
         ))}
       </ScrollView>
+      
       <TextInput
         style={styles.input}
         placeholder="Type a message..."
@@ -91,6 +100,27 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f8f4e3',
     padding: 10,
+  },
+  image: {
+    width: '50%', // Adjust width as needed
+    height: 350,  // Adjust height as needed
+    marginBottom: 10,
+    marginTop: 10, // Adjust this value to move the image down
+    alignSelf: 'center', // Center the image
+    borderRadius: 10, // Optional: for rounded corners
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 10,
+    color: '#00796b',
+  },
+  text: {
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 10,
+    color: '#555', // Optional: adjust color
   },
   chatContainer: {
     flex: 1,
